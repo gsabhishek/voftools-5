@@ -1,0 +1,13 @@
+Changes in version 5:
+
+- The routines for volume computation, truncation and conservation eforcement have been extended to non-convex polytopes.
+
+- Minor bugs have been fixed.
+
+- New routines for writing in external files the geometry of polygons and polyhedra have been included. Programs like PARAVIEW or GNUPLOT can be used to visualize the geometries.
+
+- The mesh.f and cmesh.h files include several non-convex polygonal and polyhedral cells.
+
+- Changes in some arithmetic expressions have been included to increase the computational efficiency of the routines eqsol3d and newton3d.
+
+- Two new functions (FUNC2D2 and FUNC3D2) with two new material body shapes (an ellipse and a torus, respectively) have been included in the uservoftools.f file.

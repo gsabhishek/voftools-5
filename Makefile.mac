@@ -1,0 +1,89 @@
+#---------------------------------------------------------------------#
+#---------------------------------------------------------------------#
+#                              Makefile                               #
+#---------------------------------------------------------------------#
+#            Copyright (C) 2020 J. Lopez and J. Hernandez             #
+#---------------------------------------------------------------------#
+#      Makefile uses to construct the VOFTools libraries              #
+#      (libvoftools.a) and compile the test programs in C and         #
+#      FORTRAN. Type:                                                 #
+#      1) 'make -f Makefile.mac' to construct the VOFTools libraries  #
+#      2) 'make fortran_3d -f Makefile.mac' for the 3D test program   #
+#         in FORTRAN                                                  #
+#      3) 'make c_3d -f Makefile.mac' for the 3D test program in C    #
+#      4) 'make fortran_2d -f Makefile.mac' for the 2D test program   #
+#         in FORTRAN                                                  #
+#      5) 'make c_2d -f Makefile.mac' for the 2D test program in C    #
+#      6) 'make all -f Makefile.mac' for all the test programs in     #
+#         FORTRAN and C                                               #
+#      7) 'make clean -f Makefile.mac' to recompile the VOFTools      #
+#         library in the same directory                               #
+#---------------------------------------------------------------------#
+# This file is part of VOFTools.                                      #
+#                                                                     #
+# VOFTools is free software: you can redistribute it and/or           #
+# modify it under the terms of the GNU Lesser General Public License  #
+# as published by the Free Software Foundation, either version 3 of   #
+# the License, or (at your option) any later version.                 #
+#                                                                     #
+# VOFTools is distributed in the hope that it will be useful,         #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of      #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       #
+# GNU Lesser General Public License for more details.                 #
+#                                                                     #
+# You should have received a copy of the GNU Lesser General Public    #
+# License along with VOFTools.  If not, see                           #
+# <http://www.gnu.org/licenses/>.                                     #
+#---------------------------------------------------------------------# 
+#Chose your compilers:
+#---------------------
+# 1 for GNU compilers
+# 2 for Intel compilers
+#---------------------
+COMPILER=1
+
+ifeq "$(COMPILER)" "1"
+#Probably, for versions other than macOS Catalina, the path for the
+#compiler to find the system headers should be updated.
+CC=gcc -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+F77=gfortran
+LIBS=-lm -lgfortran
+endif
+
+ifeq "$(COMPILER)" "2"
+CC=icc
+F77=ifort
+LIBS=-lifcore
+endif
+
+OPT1=-O2 -o
+OPT2=-O2 -c
+
+libvoftools.a: voftools.o
+	ar rv libvoftools.a voftools.o
+
+fortran_3d: test3d.f mesh.o uservoftools.o libvoftools.a
+	$(F77) $(OPT1) test3d_f test3d.f mesh.o uservoftools.o libvoftools.a
+
+c_3d: test3d.c mesh.o uservoftools.o libvoftools.a
+	$(CC) $(OPT1) test3d_c test3d.c mesh.o uservoftools.o libvoftools.a $(LIBS)
+
+fortran_2d: test2d.f mesh.o uservoftools.o libvoftools.a
+	$(F77) $(OPT1) test2d_f test2d.f mesh.o uservoftools.o libvoftools.a
+
+c_2d: test2d.c mesh.o uservoftools.o libvoftools.a
+	$(CC) $(OPT1) test2d_c test2d.c mesh.o uservoftools.o libvoftools.a $(LIBS)
+
+all: fortran_3d c_3d fortran_2d c_2d
+
+voftools.o: voftools.f
+	$(F77) $(OPT2) voftools.f
+
+mesh.o: mesh.f
+	$(F77) $(OPT2) mesh.f
+
+uservoftools.o: uservoftools.f
+	$(F77) $(OPT2) uservoftools.f
+
+clean:
+	rm -f *.o

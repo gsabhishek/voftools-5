@@ -1,0 +1,24 @@
+Cell geometry, ICELLTYPE:
+11
+Material body shape, ISHAPE:
+11
+Material volume/area fraction, F:
+0.5
+X coordinate of the unit-length normal vector of the interface plane, XNC:
+0.0
+Y coordinate of the unit-length normal vector of the interface plane, YNC:
+-1.0
+Z coordinate of the unit-length normal vector of the interface plane, ZNC:
+0.0            !Ignore for 2D test programs
+X coordinate of point P from which the distance is calculated, XP:
+0.0
+Y coordinate of point P from which the distance is calculated, YP:
+0.0
+Z coordinate of point P from which the distance is calculated, ZP:
+0.0            !Ignore for 2D test programs
+Subdivision number in the volume fraction cell initialization, NC:
+10
+Tolerance for the initialization procedure, TOL:
+10.0
+
+
